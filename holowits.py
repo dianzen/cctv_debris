@@ -280,7 +280,7 @@ const_roi = importlib.import_module('roi.const_roi_'+ location_id)
 
 alpha = 0.3 # that's your transparency factor
 
-path_temp = '/home/module/yolov8/tracking/temp/cam' + str(location_id)
+path_temp = '/home/module/yolov8/temp/cam' + str(location_id)
 vehicle_entering = {}
 vehicle_elapsed_time = {}
 stuck_entering = {}
@@ -391,7 +391,7 @@ for r in results:
                 if track_id in object_entering:
                     obj_time = time.time() - object_entering[track_id]
                     obj_time = round(obj_time, 2)
-                    if obj_time > 5:
+                    if obj_time > 30:
                         filename = path_temp + "_other_object.jpg"
                         record_path = '-'
                         blob = writeImage(filename, box, frame, 'other_object')
@@ -420,13 +420,14 @@ for r in results:
     # diff contains the actual image differences between the two images
     (score, diff) = structural_similarity(img1, img2, full=True)
     diff = 255 - (diff * 255).astype("uint8")
+    print('difference : ' + str(diff))
     print("Image Similarity: {:.4f}%".format(score * 100))
 
     # Search for all pixels that are different 
     # Type is <class 'numpy.ndarray'>, you can optionally convert to a list
     coords = np.argwhere(diff > 0)
     # coords = coords.tolist() 
-    # print('difference coords : ' + str(coords))
+    print('difference coords : ' + str(coords))
 
 
     # show stream
